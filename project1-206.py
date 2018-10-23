@@ -15,18 +15,18 @@ def getData(file):
 		fileDict = {}
 
 		values = line.split(",")
-		firstname = values[0]
-		lastname = values[1]
-		email = values[2]
+		First = values[0]
+		Last = values[1]
+		Email = values[2]
 		yearclass = values[3]
 		dob = values[4]
 
 		#setting up dictionary
-		fileDict["firstname"] = firstname
-		fileDict["lastname"] = lastname
-		fileDict["email"] = email
-		fileDict["yearclass"] = yearclass
-		fileDict["dob"] = dob
+		fileDict["First"] = First
+		fileDict["Last"] = Last
+		fileDict["Email"] = Email
+		fileDict["Class"] = yearclass
+		fileDict["DOB"] = dob
 		list1.append(fileDict)
 
 	return list1
@@ -38,24 +38,41 @@ def getData(file):
 #the keys are from the first row in the data. and the values are each of the other rows
 
 
-	pass
-
 def mySort(data,col):
 # Sort based on key/column
 #Input: list of dictionaries and col (key) to sort on
 #Output: Return the first item in the sorted list as a string of just: firstName lastName
 
-	pass
+	sortedList = sorted(data, key=lambda b: b[col])
+	return sortedList[0]['First']+ " " + sortedList[0]['Last']
+
 
 
 def classSizes(data):
 # Create a histogram
 # Input: list of dictionaries
+	#use for loop to create counter
 # Output: Return a list of tuples sorted by the number of students in that class in
 # descending order
 # [('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)]
 
-	pass
+	freshman = 0
+	sophomore = 0
+	junior = 0
+	senior = 0
+
+	for students in data:
+		if students["Class"] == "Freshman":
+			freshman += 1
+		elif students["Class"] == "Sophomore":
+			sophomore += 1
+		elif students["Class"] == "Junior":
+			junior += 1
+		elif students["Class"] == "Senior":
+			senior +=1
+
+	numstudents = [('Senior', senior), ('Junior', junior), ('Freshman', freshman), ('Sophomore', sophomore)]
+	return sorted(numstudents, key = lambda x: x[1], reverse = True)
 
 
 def findMonth(a):
@@ -63,16 +80,63 @@ def findMonth(a):
 # Input: list of dictionaries
 # Output: Return the month (1-12) that had the most births in the data
 
-	pass
+	january = 0
+	february = 0
+	march = 0
+	april = 0
+	may = 0
+	june = 0
+	july = 0
+	august = 0
+	september = 0
+	october = 0
+	november = 0
+	december = 0
+
+
+	for bday in a:
+		month = bday["DOB"].split("/")[0]
+		if month == "1":
+			january += 1
+		if month == "2":
+			february += 1
+		if month == "3":
+			march += 1
+		if month == "4":
+			april += 1
+		if month == "5":
+			may += 1
+		if month == "6":
+			june += 1
+		if month == "7":
+			july += 1
+		if month == "8":
+			august += 1
+		if month == "9":
+			september += 1
+		if month == "10":
+			october += 1
+		if month == "11":
+			november += 1
+		if month == "12":
+			december += 1
+
+	birthmonth = [('1', january), ('2', february), ('3', march), ('4', april), ('5', may), ('6', june), ('7', july), ('8', august), ('9', september), ('10', october), ('11', november), ('12', december)]
+	return int(sorted(birthmonth, key = lambda x: (x[1], x[0]), reverse = True)[0][0])
+
 
 def mySortPrint(a,col,fileName):
 #Similar to mySort, but instead of returning single
 #Student, the sorted data is saved to a csv file.
-# as fist,last,email
+# as first,last,email
 #Input: list of dictionaries, col (key) to sort by and output file name
 #Output: No return value, but the file is written
 
-	pass
+	sortedList = sorted(a, key=lambda b: b[col])
+	with open(fileName, 'w') as x:
+		for data1 in sortedList:
+			print(data1['First'] + ',' + data1['Last'] + ',' + data1['Email'], file = x)
+			
 
 def findAge(a):
 # def findAge(a):
@@ -105,7 +169,7 @@ def main():
 	total = 0
 	print("Read in Test data and store as a list of dictionaries")
 	data = getData('P1DataA.csv')
-	data2 = getData('P1DataB.csv')
+	data2 = getData('P1DataB2.csv')
 	total += test(type(data),type([]),50)
 
 	print()
