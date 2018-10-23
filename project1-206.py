@@ -21,13 +21,13 @@ def getData(file):
 		yearclass = values[3]
 		dob = values[4]
 
-		#setting up dictionary
+		#setting up dictionary, adding it to the list
 		fileDict["First"] = First
 		fileDict["Last"] = Last
 		fileDict["Email"] = Email
 		fileDict["Class"] = yearclass
 		fileDict["DOB"] = dob
-		list1.append(fileDict)
+		list1.append(fileDict) #adding dictionary to the list
 
 	return list1
 
@@ -45,7 +45,7 @@ def mySort(data,col):
 
 	sortedList = sorted(data, key=lambda b: b[col])
 	return sortedList[0]['First']+ " " + sortedList[0]['Last']
-
+	#sort by key and use string concatenation
 
 
 def classSizes(data):
@@ -60,6 +60,7 @@ def classSizes(data):
 	sophomore = 0
 	junior = 0
 	senior = 0
+	#counters
 
 	for students in data:
 		if students["Class"] == "Freshman":
@@ -70,9 +71,11 @@ def classSizes(data):
 			junior += 1
 		elif students["Class"] == "Senior":
 			senior +=1
+	#looping through and adding 1 for every time it encounters specific student class
 
 	numstudents = [('Senior', senior), ('Junior', junior), ('Freshman', freshman), ('Sophomore', sophomore)]
 	return sorted(numstudents, key = lambda x: x[1], reverse = True)
+	#sorting in descending order
 
 
 def findMonth(a):
@@ -122,7 +125,8 @@ def findMonth(a):
 			december += 1
 
 	birthmonth = [('1', january), ('2', february), ('3', march), ('4', april), ('5', may), ('6', june), ('7', july), ('8', august), ('9', september), ('10', october), ('11', november), ('12', december)]
-	return int(sorted(birthmonth, key = lambda x: (x[1], x[0]), reverse = True)[0][0])
+	return int(sorted(birthmonth, key = lambda x: (x[1], x[0]), reverse = True)[0][0]) #want birth month, and number of people in that month, second zero gets the month
+	#sorting by the number of the month if there's a tie
 
 
 def mySortPrint(a,col,fileName):
@@ -136,7 +140,7 @@ def mySortPrint(a,col,fileName):
 	with open(fileName, 'w') as x:
 		for data1 in sortedList:
 			print(data1['First'] + ',' + data1['Last'] + ',' + data1['Email'], file = x)
-			
+
 
 def findAge(a):
 # def findAge(a):
@@ -145,7 +149,22 @@ def findAge(a):
 # integer.  You will need to work with the DOB and the current date to find the current
 # age in years.
 
-	pass
+	today = date.today()
+
+	totalAge = 0
+
+	for person in a:
+		month = int(person["DOB"].split("/")[0])
+		day = int(person["DOB"].split("/")[1])
+		year = int(person["DOB"].split("/")[2])
+
+		age = today.year - year
+
+		if today.month <= month and today.day <day:
+			age -= 1
+		totalAge += age
+		
+	return round(totalAge / len(a))
 
 
 ################################################################
